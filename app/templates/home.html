@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h2>Welcome, {{ current_user.username if current_user.is_authenticated else 'Guest' }}</h2>
+    
+    {% if current_user.is_authenticated %}
+        <div>
+            <a href="{{ url_for('chat') }}" class="btn btn-primary">Join Chat</a>
+            <a href="{{ url_for('place_order') }}" class="btn btn-success">Place an Order</a>
+            <a href="{{ url_for('track_order') }}" class="btn btn-warning">Track Order</a>
+        </div>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Login</a> to access features.</p>
+    {% endif %}
+{% endblock %}
+              
