@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+    <h2>Live Chat</h2>
+    <div id="chat-box" class="border p-3" style="height: 300px; overflow-y: auto;"></div>
+    
+    <input type="text" id="chat-input" class="form-control mt-2" placeholder="Type a message...">
+    <button class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+
+    <script>
+        const socket = io.connect(window.location.origin);
+        socket.on('message', function(data) {
+            let chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p><strong>${data.msg}</strong></p>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        function sendMessage() {
+            let message = document.getElementById("chat-input").value;
+            socket.emit('message', { username: "{{ current_user.username }}", msg: message, room: "main" });
+            document.getElementById("chat-input").value = "";
+        }
+    </script>
+{% endblock %}
